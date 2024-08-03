@@ -1,0 +1,34 @@
+DNS1:
+  10.0.0.138
+DNS2:
+  193.17.47.1
+
+dnsmasq:
+  customDnsEntries:
+    - "address=/cluster.home/10.0.0.140"
+
+persistentVolumeClaim:
+  enabled: false
+
+virtualHost: "pihole.home"
+
+ingress:
+  enabled: true
+  hosts:
+    - "pihole.home"
+
+serviceWeb:
+  loadBalancerIP: 10.0.0.189
+  annotations:
+    metallb.universe.tf/allow-shared-ip: pihole-svc
+    external-dns.alpha.kubernetes.io/hostname: pihole.home
+  type: LoadBalancer
+
+serviceDns:
+  loadBalancerIP: 10.0.0.189
+  annotations:
+    metallb.universe.tf/allow-shared-ip: pihole-svc
+  type: LoadBalancer
+
+replicaCount: 1
+

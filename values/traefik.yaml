@@ -1,0 +1,20 @@
+service:
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: traefik.home
+
+ingressClass:
+  enabled: true
+  isDefaultClass: true
+  name: traefik-internal
+
+ingressRoute:
+  dashboard:
+    enabled: true
+    matchRule: Host(`traefik.home`)
+    services:
+      - name: api@internal
+        kind: TraefikService
+    entryPoints:
+      - web
+      - websecure
+

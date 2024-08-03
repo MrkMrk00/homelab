@@ -1,0 +1,35 @@
+repositories:
+  - name: metallb
+    url: https://metallb.github.io/metallb
+
+  - name: traefik
+    url: https://traefik.github.io/charts
+
+  - name: mojo2600
+    url: https://mojo2600.github.io/pihole-kubernetes/
+
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
+---
+releases:
+  - name: metallb
+    namespace: metallb-system
+    chart: metallb/metallb
+
+  - name: traefik
+    namespace: traefik-system
+    chart: traefik/traefik
+    values:
+      - values/traefik.yaml
+
+  - name: pihole
+    namespace: pihole-system
+    chart: mojo2600/pihole
+    values:
+      - values/pihole.yaml
+
+  - name: externaldns
+    namespace: pihole-system
+    chart: bitnami/external-dns
+    values:
+      - values/pihole-externaldns.yaml
