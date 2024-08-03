@@ -1,0 +1,4 @@
+ingress:
+  enabled: true
+  ingressClassName: traefik-internal
+  host: longhorn.cluster.local

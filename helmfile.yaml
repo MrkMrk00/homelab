@@ -10,6 +10,9 @@ repositories:
 
   - name: bitnami
     url: https://charts.bitnami.com/bitnami
+
+  - name: longhorn
+    url: https://charts.longhorn.io
 ---
 releases:
   - name: metallb
@@ -33,3 +36,9 @@ releases:
     chart: bitnami/external-dns
     values:
       - values/pihole-externaldns.yaml
+
+  - name: longhorn
+    namespace: longhorn-system
+    chart: longhorn/longhorn
+    values:
+      - values/longhorn.yaml

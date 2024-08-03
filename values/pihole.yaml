@@ -5,24 +5,17 @@ DNS2:
 
 dnsmasq:
   customDnsEntries:
-    - "address=/cluster.home/10.0.0.140"
+    - "address=/cluster.local/10.0.0.140"
 
 persistentVolumeClaim:
   enabled: false
 
-virtualHost: "pihole.home"
+virtualHost: "pihole.cluster.local"
 
 ingress:
   enabled: true
   hosts:
-    - "pihole.home"
-
-serviceWeb:
-  loadBalancerIP: 10.0.0.189
-  annotations:
-    metallb.universe.tf/allow-shared-ip: pihole-svc
-    external-dns.alpha.kubernetes.io/hostname: pihole.home
-  type: LoadBalancer
+    - "pihole.cluster.local"
 
 serviceDns:
   loadBalancerIP: 10.0.0.189
@@ -31,4 +24,10 @@ serviceDns:
   type: LoadBalancer
 
 replicaCount: 1
+
+persistentVolumeClaim:
+  enabled: true
+  accessModes:
+    - ReadWriteOnce
+  storageClass: longhorn
 
