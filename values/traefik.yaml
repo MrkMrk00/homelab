@@ -15,6 +15,10 @@ providers:
   kubernetesIngress:
     ingressClass: traefik-internal
 
+service:
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 10.0.0.140
+
 ingressRoute:
   dashboard:
     enabled: true
