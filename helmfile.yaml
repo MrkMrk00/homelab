@@ -25,6 +25,12 @@ releases:
     values:
       - values/traefik.yaml
 
+  - name: traefik
+    namespace: traefik-prod-system
+    chart: traefik/traefik
+    values:
+      - values/traefik-prod.yaml
+
   - name: pihole
     namespace: pihole-system
     chart: mojo2600/pihole
@@ -42,3 +48,4 @@ releases:
     chart: longhorn/longhorn
     values:
       - values/longhorn.yaml
+

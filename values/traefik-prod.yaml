@@ -1,7 +1,7 @@
 ingressClass:
   enabled: true
-  isDefaultClass: true
-  name: traefik-internal
+  isDefaultClass: false
+  name: traefik-prod
 
 logs:
   access:
@@ -10,17 +10,22 @@ logs:
 
 providers:
   kubernetesCRD:
-    ingressClass: traefik-internal
+    ingressClass: traefik-prod
 
   kubernetesIngress:
-    ingressClass: traefik-internal
+    ingressClass: traefik-prod
+
+service:
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 10.0.0.141
+    external-dns.alpha.kubernetes.io/hostname: cluster.prod
 
 ingressRoute:
   dashboard:
     enabled: true
     annotations:
       kubernetes.io/ingress.class: traefik-internal
-    matchRule: Host(`traefik.cluster.local`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
+    matchRule: Host(`traefik-prod.cluster.local`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
     services:
       - name: api@internal
         kind: TraefikService

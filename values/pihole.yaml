@@ -14,6 +14,7 @@ virtualHost: "pihole.cluster.local"
 
 ingress:
   enabled: true
+  ingressClassName: traefik-internal
   hosts:
     - "pihole.cluster.local"
 
