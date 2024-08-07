@@ -13,6 +13,9 @@ repositories:
 
   - name: longhorn
     url: https://charts.longhorn.io
+
+  - name: itzg
+    url: https://itzg.github.io/minecraft-server-charts/
 ---
 releases:
   - name: metallb
@@ -48,4 +51,10 @@ releases:
     chart: longhorn/longhorn
     values:
       - values/longhorn.yaml
+
+  - name: minecraft-server
+    namespace: minecraft-system
+    chart: itzg/minecraft
+    values:
+      - values/minecraft-server.yaml
 

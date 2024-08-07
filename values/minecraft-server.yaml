@@ -1,0 +1,24 @@
+resources:
+  requests:
+    memory: 2048Mi
+    cpu: 1000m
+
+minecraftServer:
+  eula: TRUE
+  version: "1.21"
+  enableCommandBlock: TRUE
+  motd: "Čus"
+  difficulty: normal
+  memory: 2048M
+  icon: https://www.pinclipart.com/picdir/middle/116-1169283_crying-laughing-emoji-clipart-face-with-tears-of.png
+
+  serviceType: LoadBalancer
+  loadBalancerIP: 10.0.0.150
+
+persistence:
+  storageClass: longhorn
+  dataDir:
+    enabled: true
+    accessModes:
+      - ReadWriteOnce
+
