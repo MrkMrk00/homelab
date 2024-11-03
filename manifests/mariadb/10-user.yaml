@@ -1,0 +1,45 @@
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: User
+metadata:
+  name: user-marek
+  namespace: mariadb-system
+spec:
+  name: marek
+  mariaDbRef:
+    name: mariadb
+  passwordHashSecretKeyRef:
+    name: mariadb-user-marek-password
+    key: passwordHash
+  host: "10.0.0.0/255.0.0.0"
+  cleanupPolicy: Delete
+  requeueInterval: 30s
+  retryInterval: 5s
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mariadb-user-marek-password
+  namespace: mariadb-system
+type: Opaque
+data:
+  passwordHash: "KkJCRTVCOEFBOUQxMzNEMzY1OEY4NjI0QkNDNzFDNjc1M0ZDNTQzNkE="
+---
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: Grant
+metadata:
+  name: user-marek-grant
+  namespace: mariadb-system
+spec:
+  mariaDbRef:
+    name: mariadb
+  privileges:
+    - "ALL PRIVILEGES"
+  database: "*"
+  table: "*"
+  username: marek
+  grantOption: true
+  host: "10.0.0.0/255.0.0.0"
+  cleanupPolicy: Delete
+  requeueInterval: 30s
+  retryInterval: 5s
+

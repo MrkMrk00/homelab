@@ -1,0 +1,8 @@
+grafana:
+  adminPassword: "admin"
+  ingress:
+    enabled: true
+    ingressClassName: traefik-internal
+    hosts: 
+      - grafana.cluster.local
+

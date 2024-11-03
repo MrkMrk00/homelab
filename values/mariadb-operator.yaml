@@ -1,0 +1,8 @@
+metrics:
+  enabled: true
+
+crds:
+  enabled: true
+
+image:
+  pullPolicy: Always
