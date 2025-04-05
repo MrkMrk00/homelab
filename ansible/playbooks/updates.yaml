@@ -1,9 +1,15 @@
 - hosts: kube_vms
   become: true
   tasks:
-    - name: "update and upgrade apt packages"
+    - name: update and upgrade apt packages
       apt:
         upgrade: true
         update_cache: true
         install_recommends: false
         autoremove: true
+
+    - name: install curl
+      apt:
+        name: curl
+        state: latest
+        update_cache: yes
