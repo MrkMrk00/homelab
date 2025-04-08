@@ -1,0 +1,12 @@
+{{- $existing := (lookup "v1" "Secret" .Release.Namespace .Values.netbird.setupKeySecret) }}
+{{- if not $existing }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "cluster-gateway.fullname" . }}-cfg
+  labels:
+    app: {{ include "cluster-gateway.name" . }}
+data:
+  haproxy.cfg: |
+{{ .Values.haproxy.config | indent 4 }}
+{{- end }}
