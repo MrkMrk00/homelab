@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cluster-gateway.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "cluster-gateway.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "cluster-gateway.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "cluster-gateway.name" . }}
+    spec:
+      containers:
+        - name: haproxy
+          image: {{ .Values.haproxy.image }}
+          ports:
+            - containerPort: {{ .Values.haproxy.port }}
+          volumeMounts:
+            - name: haproxy-config
+              mountPath: /usr/local/etc/haproxy/haproxy.cfg
+              subPath: haproxy.cfg
+        - name: netbird
+          image: {{ .Values.netbird.image }}
+          env:
+            - name: SETUP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.netbird.setupKeySecret }}
+                  key: {{ .Values.netbird.setupKeySecretKey }}
+      volumes:
+        - name: haproxy-config
+          configMap:
+            name: {{ include "cluster-gateway.fullname" . }}-cfg
+
+

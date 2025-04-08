@@ -1,0 +1,32 @@
+replicaCount: 3
+
+netbird:
+  image: netbirdio/netbird:latest
+  configPath: /etc/netbird
+  setupKeySecret: netbird-setup-key
+  setupKeySecretKey: setup-key
+
+haproxy:
+  image: haproxy:2.9
+  port: 8080
+  config: |
+    global
+      maxconn 1000
+      log stdout format raw
+
+    defaults
+      log     global
+      mode    tcp
+      option  tcplog
+      timeout connect 10s
+      timeout client  1m
+      timeout server  1m
+
+    frontend web_in
+      bind *:8080
+      default_backend traefik_out
+
+    backend traefik_out
+      server traefik traefik.traefik-prod-system.svc.cluster.local:80 check
+
+resources: {}
