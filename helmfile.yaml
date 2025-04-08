@@ -19,6 +19,9 @@ repositories:
 
   - name: mariadb-operator
     url: https://helm.mariadb.com/mariadb-operator
+
+  - name: argo
+    url: https://argoproj.github.io/argo-helm
 ---
 releases:
   - name: metallb
@@ -67,3 +70,14 @@ releases:
     values:
       - values/mariadb-operator.yaml
 
+  - name: argocd
+    namespace: argocd
+    chart: argo/argo-cd
+    values:
+      - values/argocd.yaml
+
+  - name: phpmyadmin
+    namespace: phpmyadmin
+    chart: bitnami/phpmyadmin
+    values:
+      - values/phpmyadmin.yaml

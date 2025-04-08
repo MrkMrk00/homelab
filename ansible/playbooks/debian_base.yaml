@@ -1,0 +1,51 @@
+---
+- name: Set up ansible user and secure SSH
+  hosts: localhost
+  connection: local
+  become: yes
+  vars:
+    ansible_user_name: ansible
+
+  tasks:
+    - name: Create ansible user without password
+      user:
+        name: "{{ ansible_user_name }}"
+        shell: /bin/bash
+        create_home: yes
+
+    - name: Allow passwordless sudo for ansible user
+      copy:
+        dest: "/etc/sudoers.d/{{ ansible_user_name }}"
+        content: "{{ ansible_user_name }} ALL=(ALL) NOPASSWD:ALL\n"
+        owner: root
+        group: root
+        mode: '0440'
+        validate: '/usr/sbin/visudo -cf %s'
+
+    - name: Disable password authentication in sshd_config
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PasswordAuthentication\s+'
+        line: 'PasswordAuthentication no'
+        state: present
+        backup: yes
+
+    - name: Disable challenge-response authentication (extra precaution)
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?ChallengeResponseAuthentication\s+'
+        line: 'ChallengeResponseAuthentication no'
+        state: present
+        backup: yes
+
+    - name: Add authorized SSH key for ansible user
+      authorized_key:
+        user: "{{ ansible_user_name }}"
+        state: present
+        key: "{{ lookup('file', 'files/id_ed25519.ansible.pub') }}"
+
+    - name: Restart SSH service
+      service:
+        name: sshd
+        state: restarted
+

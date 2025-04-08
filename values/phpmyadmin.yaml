@@ -1,0 +1,8 @@
+ingress:
+  enabled: true
+  hostname: "phpmyadmin.cluster.local"
+  ingressClassName: "traefik-internal"
+
+db:
+  host: "mariadb.mariadb-system.svc.cluster.local"
+

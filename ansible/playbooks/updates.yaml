@@ -13,3 +13,9 @@
         name: curl
         state: latest
         update_cache: yes
+
+    - name: install open-iscsi
+      apt:
+        name: open-iscsi
+        state: latest
+        update_cache: yes
