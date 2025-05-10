@@ -22,6 +22,9 @@ repositories:
 
   - name: argo
     url: https://argoproj.github.io/argo-helm
+
+  - name: community-charts
+    url: https://community-charts.github.io/helm-charts
 ---
 releases:
   - name: metallb
@@ -45,12 +48,6 @@ releases:
     chart: mojo2600/pihole
     values:
       - values/pihole.yaml
-
-  - name: externaldns
-    namespace: pihole-system
-    chart: bitnami/external-dns
-    values:
-      - values/pihole-externaldns.yaml
 
   - name: longhorn
     namespace: longhorn-system
@@ -81,3 +78,9 @@ releases:
     chart: bitnami/phpmyadmin
     values:
       - values/phpmyadmin.yaml
+
+  - name: cloudflared
+    namespace: cloudflared-system
+    chart: community-charts/cloudflared
+    values:
+      - values/cloudflared.yaml.gotmpl
