@@ -1,0 +1,12 @@
+ingress:
+  - hostname: "*.hauschwitz.cz"
+    service: http://traefik.traefik-prod-system.svc.cluster.local:80
+
+  - service: http_status:404
+
+tunnelConfig:
+    name: "k8s"
+
+tunnelSecrets:
+    base64EncodedConfigJsonFile: {{ requiredEnv "CF_TUNNEL_CONFIG" | quote }}
+    base64EncodedPemFile: {{ requiredEnv "CF_TUNNEL_CERT" | quote }}
