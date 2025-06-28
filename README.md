@@ -48,3 +48,11 @@ The _architecture_ part of the cluster consists of:
 - the `cloudflared` Tunnels connector,
 - and more...
 
+## TODOs
+- [Gitea](https://about.gitea.com/) instance for CI/CD and a container image repository,
+- better storage solution (external NAS with RAID; shared via NFS?),
+- [NextCloud](https://nextcloud.com/), [Matrix server](https://matrix.org/), [Fediverse](https://en.wikipedia.org/wiki/Fediverse) stuff?,
+- improved logging and alerting (there's almost none currently),
+- a rack with better cooling / power management and monitoring, smart outlets?,
+- actually use it for projects :D.
+
