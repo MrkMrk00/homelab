@@ -3,6 +3,9 @@ ingressClass:
   isDefaultClass: false
   name: traefik-prod
 
+deployment:
+  kind: DaemonSet
+
 logs:
   access:
     enabled: true
