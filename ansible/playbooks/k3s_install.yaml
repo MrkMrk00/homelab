@@ -1,17 +1,21 @@
 - name: Install K3s server
   hosts: k3s_server
   become: yes
-  roles:
-    - k3s_server
   vars_prompt:
     - name: k3s_token
-      prompt: Enter the k3s_token
+      prompt: "Enter the k3s_token"
+      private: yes
+  roles:
+    - k3s_check
+    - k3s_server
 
 - name: Install K3s workers
   hosts: k3s_worker
   become: yes
-  roles:
-    - k3s_worker
   vars_prompt:
     - name: k3s_token
-      prompt: Enter the k3s_token
+      prompt: "Enter the k3s_token"
+      private: yes
+  roles:
+    - k3s_check
+    - k3s_worker

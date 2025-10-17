@@ -1,13 +1,15 @@
 - name: Install K3s server
   shell: |
-    curl -sfL https://get.k3s.io | K3S_TOKEN={{ k3s_token }} sh -s - server \
-      --node-taint "env=dev:PreferNoSchedule" \
-      --disable=traefik \
+    curl -sfL https://get.k3s.io |              \
+      K3S_VERSION={{ k3s_version }}             \
+      K3S_TOKEN={{ k3s_token }} sh -s - server  \
+      --node-taint "env=dev:PreferNoSchedule"   \
+      --disable=traefik                         \
       --disable=servicelb
-  args:
-    creates: /usr/local/bin/k3s
+  when: (not k3s_bin.stat.exists) or (k3s_version != k3s_current_version_str)
 
 - name: Wait for K3s kubeconfig
   wait_for:
     path: /etc/rancher/k3s/k3s.yaml
     timeout: 60
+  when: not k3s_bin.stat.exists

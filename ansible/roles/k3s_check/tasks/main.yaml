@@ -1,0 +1,29 @@
+- name: Check if K3s binary exists
+  stat:
+    path: /usr/local/bin/k3s
+  register: k3s_bin
+
+- name: Get current k3s version
+  command: k3s --version
+  register: k3s_current_version
+  ignore_errors: yes
+
+- name: Extract K3s version
+  set_fact:
+    k3s_current_version_str: "{{ k3s_current_version.stdout | default('') | regex_search('v[0-9]+\\.[0-9]+\\.[0-9]+\\+[0-9a-z]+', '\\0') }}"
+
+- name: Convert version array to string
+  set_fact:
+    k3s_current_version_str: "{{ k3s_current_version_str[0] }}"
+  when: k3s_bin.stat.exists
+
+- name: Print k3s version
+  debug:
+    msg: "current = (exists = {{ k3s_bin.stat.exists }}){{ k3s_current_version_str }}; desired = {{ k3s_version }}"
+
+- name: Debug whether to install
+  debug:
+    msg: >
+      Install/upgrade will run? {{ (not k3s_bin.stat.exists) or
+      (k3s_version != k3s_current_version_str) }}
+
