@@ -36,3 +36,5 @@ ingressRoute:
       - web
       - websecure
 
+metrics:
+  prometheus: {}
