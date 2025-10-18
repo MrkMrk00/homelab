@@ -6,3 +6,11 @@ grafana:
     hosts: 
       - grafana.cluster.local
 
+  additionalDataSources:
+    - name: Loki
+      type: loki
+      access: proxy
+      url: http://grafana-loki-gateway.prometheus-system.svc.cluster.local/
+      jsonData:
+        timeout: 60
+        maxLines: 1000

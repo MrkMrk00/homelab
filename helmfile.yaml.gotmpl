@@ -14,6 +14,9 @@ repositories:
   - name: prometheus-community
     url: https://prometheus-community.github.io/helm-charts
 
+  - name: grafana
+    url: https://grafana.github.io/helm-charts
+
   - name: mariadb-operator
     url: https://helm.mariadb.com/mariadb-operator
 
@@ -60,9 +63,23 @@ releases:
   - name: kube-prometheus-stack
     namespace: prometheus-system
     chart: prometheus-community/kube-prometheus-stack
-    version: ^73.0.0
+    version: ^78.0.0
     values:
       - values/kube-prometheus-stack.yaml
+
+  - name: grafana-loki
+    namespace: prometheus-system
+    chart: grafana/loki
+    version: ^6.0.0
+    values:
+      - values/grafana-loki.yaml
+
+  - name: grafana-alloy
+    namespace: prometheus-system
+    chart: grafana/alloy
+    version: ^1.0.0
+    values:
+      - values/grafana-alloy.yaml
 
   - name: mariadb-operator
     namespace: mariadb-system
@@ -77,11 +94,11 @@ releases:
     values:
       - values/argocd.yaml
 
+{{- if ne (env "CF_TUNNEL_CONFIG" | default "") "" -}}
   - name: cloudflared
     namespace: cloudflared-system
     chart: community-charts/cloudflared
     version: ~2.0.0
     values:
       - values/cloudflared.yaml.gotmpl
-    condition: {{ env "CF_TUNNEL_CONFIG" | default("") != "" }}
-
+{{- end -}}
