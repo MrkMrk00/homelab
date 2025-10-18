@@ -9,12 +9,6 @@
         install_recommends: false
         autoremove: true
 
-    - name: install curl
-      apt:
-        name: curl
-        state: latest
-        update_cache: yes
-
     - name: install open-iscsi
       when: inventory_hostname in groups['kube_vms']
       apt:
