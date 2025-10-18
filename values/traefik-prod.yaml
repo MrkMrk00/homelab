@@ -10,6 +10,7 @@ logs:
   access:
     enabled: true
     addInternals: true
+    format: json
 
 providers:
   kubernetesCRD:
