@@ -4,6 +4,7 @@ metadata:
   name: mariadb
   namespace: mariadb-system
 spec:
+  image: mariadb:11.4.8
   rootPasswordSecretKeyRef:
     name: mariadb-root
     key: password
