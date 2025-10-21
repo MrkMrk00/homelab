@@ -3,6 +3,16 @@ ingressClass:
   isDefaultClass: false
   name: traefik-prod
 
+ports:
+  web:
+    forwardedHeaders:
+      trustedIPs:
+        - "10.42.0.0/16"
+  websecure:
+    forwardedHeaders:
+      trustedIPs:
+        - "10.42.0.0/16"
+
 deployment:
   kind: DaemonSet
 
@@ -22,7 +32,6 @@ providers:
 service:
   annotations:
     metallb.universe.tf/loadBalancerIPs: 10.0.0.141
-    external-dns.alpha.kubernetes.io/hostname: cluster.prod
 
 ingressRoute:
   dashboard:

@@ -3,6 +3,16 @@ ingressClass:
   isDefaultClass: true
   name: traefik-internal
 
+ports:
+  web:
+    forwardedHeaders:
+      trustedIPs:
+        - "10.42.0.0/16"
+  websecure:
+    forwardedHeaders:
+      trustedIPs:
+        - "10.42.0.0/16"
+
 logs:
   access:
     enabled: true
