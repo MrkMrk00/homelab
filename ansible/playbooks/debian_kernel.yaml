@@ -1,0 +1,34 @@
+- name: Use kernel from backports
+  hosts: kube_vms
+  become: yes
+  tasks:
+    - name: Ensure bookworm-backports repo is present
+      ansible.builtin.apt_repository:
+        repo: "deb http://deb.debian.org/debian bookworm-backports main contrib non-free non-free-firmware"
+        state: present
+        filename: "bookworm-backports"
+
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Install backports kernel
+      ansible.builtin.apt:
+        name: "linux-image-amd64"
+        default_release: "bookworm-backports"
+        state: latest
+        update_cache: yes
+
+    - name: Install backports kernel headers
+      ansible.builtin.apt:
+        name: "linux-headers-amd64"
+        default_release: "bookworm-backports"
+        state: latest
+        update_cache: yes
+
+    - name: Install backports firmware
+      ansible.builtin.apt:
+        name: "firmware-misc-nonfree"
+        default_release: "bookworm-backports"
+        state: latest
+        update_cache: yes
