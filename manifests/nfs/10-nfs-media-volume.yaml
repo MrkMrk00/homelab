@@ -8,7 +8,7 @@ spec:
   accessModes:
     - ReadOnlyMany
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: "zfs-media"
+  storageClassName: "nfs-media"
   nfs:
     path: /mnt/zfs-pool-small/smb/media
     server: 10.0.0.215
