@@ -21,8 +21,14 @@ spec:
           value: "true"
         - name: ingress.className
           value: "traefik-prod"
+
         - name: ingress.hosts[0].host
           value: "jellyfin.hauschwitz.cz"
+        - name: ingress.hosts[0].paths[0].path
+          value: "/"
+        - name: ingress.hosts[0].paths[0].pathType
+          value: "Prefix"
+
         - name: persistence.storageClassName
           value: longhorn
 
