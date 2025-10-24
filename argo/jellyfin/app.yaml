@@ -15,22 +15,22 @@ spec:
     repoURL: https://github.com/MrkMrk00/homelab
     targetRevision: HEAD
     path: charts/jellyfin
+    helm:
+      valuesObject:
+        - name: ingress.enabled
+          value: true
+        - name: ingress.className
+          value: traefik-internal
+        - name: persistence.storageClassName
+          value: longhorn
+
+        - name: persistence.media.enabled
+          value: true
+        - name: persistence.media.accessMode
+          value: ReadOnlyMany
+        - name: persistence.media.storageClassName
+          value: nfs-media
   destination:
     server: https://kubernetes.default.svc
     namespace: jellyfin
 
-  helm:
-    parameters:
-      - name: ingress.enabled
-        value: true
-      - name: ingress.className
-        value: traefik-internal
-      - name: persistence.storageClassName
-        value: longhorn
-
-      - name: persistence.media.enabled
-        value: true
-      - name: persistence.media.accessMode
-        value: ReadOnlyMany
-      - name: persistence.media.storageClassName
-        value: nfs-media
