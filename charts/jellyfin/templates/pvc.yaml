@@ -34,6 +34,7 @@ spec:
     requests:
       storage: {{ .Values.persistence.cache.size }}
 {{- end }}
+
 {{- if .Values.persistence.media.enabled }}
 ---
 apiVersion: v1
@@ -44,12 +45,8 @@ metadata:
     {{- include "jellyfin.labels" . | nindent 4 }}
 spec:
   accessModes:
-    - {{ .Values.persistence.accessMode }}
-  {{- if .Values.persistence.media.storageClassName }}
+    - {{ .Values.persistence.media.accessMode }}
   storageClassName: {{ .Values.persistence.media.storageClassName }}
-  {{- else if .Values.persistence.storageClassName }}
-  storageClassName: {{ .Values.persistence.storageClassName }}
-  {{- end }}
   resources:
     requests:
       storage: {{ .Values.persistence.media.size }}

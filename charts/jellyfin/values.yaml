@@ -34,8 +34,8 @@ service:
 
 # Ingress configuration
 ingress:
-  enabled: true
-  className: "traefik"
+  enabled: false
+  className: ""
   annotations: {}
   hosts:
     - host: jellyfin.cluster.local
@@ -76,9 +76,10 @@ persistence:
 
   media:
     enabled: false
-    size: 100Gi
+    size: 500Gi
     mountPath: /media
-    storageClassName: "nfs"
+    storageClassName: ""
+    accessMode: ReadWriteOnce
 
 extraVolumes: []
 extraVolumeMounts: []
