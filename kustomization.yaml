@@ -5,4 +5,5 @@ resources:
   - ./manifests/metallb/00-ippool.yaml
   - ./manifests/mariadb/00-mariadb.yaml
   - ./manifests/mariadb/10-user.yaml
+  - ./manifests/nfs/00-nfs-media-volume.yaml
 
