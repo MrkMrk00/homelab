@@ -18,14 +18,13 @@ spec:
     helm:
       parameters:
         - name: ingress.enabled
-          value: true
-        - name: ingress.className
+          value: "true"
           value: traefik-internal
         - name: persistence.storageClassName
           value: longhorn
 
         - name: persistence.media.enabled
-          value: true
+          value: "true"
         - name: persistence.media.accessMode
           value: ReadOnlyMany
         - name: persistence.media.storageClassName
