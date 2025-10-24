@@ -16,7 +16,7 @@ spec:
     targetRevision: HEAD
     path: charts/jellyfin
     helm:
-      valuesObject:
+      parameters:
         - name: ingress.enabled
           value: true
         - name: ingress.className
