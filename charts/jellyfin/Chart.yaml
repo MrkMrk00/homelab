@@ -1,0 +1,17 @@
+apiVersion: v2
+name: jellyfin
+description: A Helm chart for Jellyfin media server on Kubernetes
+type: application
+version: 0.1.0
+appVersion: "10.9.0"
+keywords:
+  - jellyfin
+  - media-server
+  - streaming
+home: https://jellyfin.org/
+sources:
+  - https://github.com/jellyfin/jellyfin
+maintainers:
+  - name: Homelab
+    email: admin@homelab.local
+
