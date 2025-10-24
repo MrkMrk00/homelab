@@ -5,6 +5,11 @@ metadata:
   namespace: argocd
 spec:
   project: default
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+
   source:
     repoURL: https://github.com/MrkMrk00/homelab
     targetRevision: HEAD
