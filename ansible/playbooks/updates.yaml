@@ -15,3 +15,10 @@
         name: open-iscsi
         state: latest
         update_cache: yes
+
+    - name: install nfs package
+      when: inventory_hostname in groups['kube_vms']
+      apt:
+        name: nfs-common
+        state: latest
+        update_cache: yes

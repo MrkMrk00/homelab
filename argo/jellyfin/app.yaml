@@ -19,7 +19,10 @@ spec:
       parameters:
         - name: ingress.enabled
           value: "true"
-          value: traefik-internal
+        - name: ingress.className
+          value: "traefik-prod"
+        - name: ingress.hosts[0].host
+          value: "jellyfin.hauschwitz.cz"
         - name: persistence.storageClassName
           value: longhorn
 
