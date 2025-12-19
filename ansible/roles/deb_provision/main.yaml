@@ -1,0 +1,21 @@
+- name: Upgrade all packages
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+    upgrade: dist
+    autoremove: true
+    install_recommends: false
+
+- name: Install basic packages
+  ansible.builtin.apt:
+    name:
+      - vim
+      - python3
+      - python3-pip
+      - ca-certificates
+      - curl
+      - open-iscsi
+      - nfs-common
+    state: present
+
+- ansible.builtin.include_tasks: kernel.yaml
