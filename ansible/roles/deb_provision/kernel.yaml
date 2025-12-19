@@ -65,6 +65,8 @@
 
       # --- Memory behavior ---
       vm.swappiness = 0
+      vm.panic_on_oom = 0
+      vm.overcommit_memory = 1
 
       # --- File system watchers (kubelet, containerd, CSI) ---
       fs.inotify.max_user_instances = 8192
@@ -81,6 +83,10 @@
 
       # --- Conntrack (pods/services NAT) ---
       net.netfilter.nf_conntrack_max = 262144
+
+      # --- Kernel crash handling ---
+      kernel.panic = 10
+      kernel.panic_on_oops = 1
 
 - name: Apply sysctl settings
   ansible.builtin.command: sysctl --system
