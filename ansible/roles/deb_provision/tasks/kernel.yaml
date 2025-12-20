@@ -1,0 +1,141 @@
+- name: Ensure gnupg is installed
+  ansible.builtin.apt:
+    name:
+      - gnupg
+      - apt-transport-https
+    state: present
+    update_cache: true
+
+- name: Add debian-backports repository
+  ansible.builtin.copy:
+    dest: /etc/apt/sources.list.d/debian-backports.sources
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      Types: deb deb-src
+      URIs: http://deb.debian.org/debian
+      Suites: trixie-backports
+      Components: main
+      Enabled: yes
+      Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
+- name: Add non-free repositories
+  ansible.builtin.copy:
+    dest: /etc/apt/sources.list.d/trixie-non-free.sources
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      Types: deb deb-src
+      URIs: https://deb.debian.org/debian
+      Suites: trixie trixie-updates
+      Components: main contrib non-free non-free-firmware
+      Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
+      Types: deb deb-src
+      URIs: https://security.debian.org/debian-security
+      Suites: trixie-security
+      Components: main contrib non-free non-free-firmware
+      Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
+      Types: deb deb-src
+      URIs: https://deb.debian.org/debian
+      Suites: trixie-backports
+      Components: main contrib non-free non-free-firmware
+      Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
+- name: Pin trixie-backports repository to low priority
+  ansible.builtin.copy:
+    dest: /etc/apt/preferences.d/99-backports
+    mode: "0644"
+    content: |
+      Package: *
+      Pin: release a=trixie-backports
+      Pin-Priority: 100
+
+- name: Update APT cache
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Install backported kernel (trixie-backports/linux-image-amd64)
+  ansible.builtin.apt:
+    name:
+      - linux-image-amd64
+      - linux-headers-amd64
+    state: present
+    default_release: "trixie-backports"
+  register: kernel_install
+
+- name: Install firmware packages
+  ansible.builtin.apt:
+    name:
+      - firmware-amd-graphics
+      - firmware-misc-nonfree
+      - amd64-microcode
+    state: present
+
+- name: Ensure required kernel modules are loaded at boot
+  ansible.builtin.copy:
+    dest: /etc/modules-load.d/k3s.conf
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      br_netfilter
+      overlay
+
+- name: Load br_netfilter module
+  ansible.builtin.command: modprobe br_netfilter
+  changed_when: false
+
+- name: Load overlay module
+  ansible.builtin.command: modprobe overlay
+  changed_when: false
+
+- name: Configure kernel parameters for Kubernetes (k3s)
+  ansible.builtin.copy:
+    dest: /etc/sysctl.d/99-k3s.conf
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      # --- Kubernetes required networking ---
+      net.ipv4.ip_forward = 1
+      net.ipv6.conf.all.forwarding = 1
+      net.bridge.bridge-nf-call-iptables = 1
+      net.bridge.bridge-nf-call-ip6tables = 1
+
+      # --- Memory behavior ---
+      vm.swappiness = 0
+      vm.panic_on_oom = 0
+      vm.overcommit_memory = 1
+
+      # --- File system watchers (kubelet, containerd, CSI) ---
+      fs.inotify.max_user_instances = 8192
+      fs.inotify.max_user_watches = 524288
+
+      # --- Network scalability ---
+      net.core.somaxconn = 32768
+      net.ipv4.tcp_max_syn_backlog = 8192
+
+      # --- TCP connection stability ---
+      net.ipv4.tcp_keepalive_time = 600
+      net.ipv4.tcp_keepalive_intvl = 30
+      net.ipv4.tcp_keepalive_probes = 10
+
+      # --- Conntrack (pods/services NAT) ---
+      net.netfilter.nf_conntrack_max = 262144
+
+      # --- Kernel crash handling ---
+      kernel.panic = 10
+      kernel.panic_on_oops = 1
+
+- name: Apply sysctl settings
+  ansible.builtin.command: sysctl --system
+  changed_when: false
+
+- name: Reboot into new kernel (if changed)
+  ansible.builtin.reboot:
+    reboot_timeout: 600
+  when: kernel_install.changed

@@ -1,0 +1,32 @@
+- name: Ensure ufw is installed
+  ansible.builtin.apt:
+    name: ufw
+    state: present
+    update_cache: yes
+
+- name: Reset UFW to defaults
+  ansible.builtin.command: ufw --force reset
+
+- name: Set default UFW policies
+  ansible.builtin.ufw:
+    state: enabled
+    default: deny
+    direction: incoming
+    logging: on
+
+- name: Allow required ports and networks for k3s
+  ansible.builtin.ufw:
+    rule: "{{ item.rule }}"
+    port: "{{ item.port | default(omit) }}"
+    proto: "{{ item.proto | default(omit) }}"
+    from_ip: "{{ item.from_ip | default(omit) }}"
+  loop:
+    - { rule: allow, from_ip: 10.0.0.0/24, port: 22, proto: tcp } # SSH from local network
+    - { rule: allow, port: 6443, proto: tcp } # Kubernetes API server
+    - { rule: allow, port: 10250, proto: tcp } # kubelet
+    - { rule: allow, port: 30000:32767, proto: tcp } # NodePort range
+    - { rule: allow, port: 2379:2380, proto: tcp } # etcd (control-plane only)
+    - { rule: allow, port: 10251:10259, proto: tcp } # Control-plane components
+    - { rule: allow, port: 8472, proto: udp } # Flannel VXLAN
+    - { rule: allow, from_ip: 10.42.0.0/16 } # Pod network (adjust subnet if needed)
+    - { rule: allow, from_ip: 10.0.0.0/24 } # Node subnet
