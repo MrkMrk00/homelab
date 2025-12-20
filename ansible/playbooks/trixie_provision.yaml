@@ -1,0 +1,5 @@
+- name: Provision Trixie based VM
+  hosts: all
+  become: true
+  roles:
+    - deb_provision

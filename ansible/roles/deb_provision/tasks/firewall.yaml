@@ -10,7 +10,8 @@
 - name: Set default UFW policies
   ansible.builtin.ufw:
     state: enabled
-    default: deny incoming
+    default: deny
+    direction: incoming
     logging: on
 
 - name: Allow required ports and networks for k3s

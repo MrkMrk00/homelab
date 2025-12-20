@@ -1,9 +1,49 @@
-- name: Enable Debian trixie-backports
-  ansible.builtin.apt_repository:
-    filename: "trixie-backports"
-    repo: "deb http://deb.debian.org/debian trixie-backports main contrib non-free non-free-firmware"
+- name: Ensure gnupg is installed
+  ansible.builtin.apt:
+    name:
+      - gnupg
+      - apt-transport-https
     state: present
     update_cache: true
+
+- name: Add debian-backports repository
+  ansible.builtin.copy:
+    dest: /etc/apt/sources.list.d/debian-backports.sources
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      Types: deb deb-src
+      URIs: http://deb.debian.org/debian
+      Suites: trixie-backports
+      Components: main
+      Enabled: yes
+      Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
+- name: Add non-free repositories
+  ansible.builtin.copy:
+    dest: /etc/apt/sources.list.d/trixie-non-free.sources
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      Types: deb deb-src
+      URIs: https://deb.debian.org/debian
+      Suites: trixie trixie-updates
+      Components: main contrib non-free non-free-firmware
+      Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
+      Types: deb deb-src
+      URIs: https://security.debian.org/debian-security
+      Suites: trixie-security
+      Components: main contrib non-free non-free-firmware
+      Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
+      Types: deb deb-src
+      URIs: https://deb.debian.org/debian
+      Suites: trixie-backports
+      Components: main contrib non-free non-free-firmware
+      Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 
 - name: Pin trixie-backports repository to low priority
   ansible.builtin.copy:
@@ -14,6 +54,10 @@
       Pin: release a=trixie-backports
       Pin-Priority: 100
 
+- name: Update APT cache
+  ansible.builtin.apt:
+    update_cache: yes
+
 - name: Install backported kernel (trixie-backports/linux-image-amd64)
   ansible.builtin.apt:
     name:
@@ -22,7 +66,6 @@
     state: present
     default_release: "trixie-backports"
   register: kernel_install
-
 
 - name: Install firmware packages
   ansible.builtin.apt:
