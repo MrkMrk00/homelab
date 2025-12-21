@@ -16,7 +16,7 @@ spec:
     namespace: monitoring-system
   source:
     repoURL: https://charts.signoz.io
-    targetRevision: 0.79.0
+    targetRevision: 0.104.1
     chart: signoz
     helm:
       valuesObject:
