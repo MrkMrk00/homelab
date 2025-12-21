@@ -18,14 +18,18 @@
       - nfs-common
     state: present
 
-- name: "SSH: "
+- name: "Resolved"
+  ansible.builtin.include_tasks:
+    file: resolved.yaml
+
+- name: "SSH"
   ansible.builtin.include_tasks:
     file: ssh.yaml
 
-- name: "Firewall: "
+- name: "Firewall"
   ansible.builtin.include_tasks:
     file: firewall.yaml
 
-- name: "Kernel: "
+- name: "Kernel"
   ansible.builtin.include_tasks:
     file: kernel.yaml

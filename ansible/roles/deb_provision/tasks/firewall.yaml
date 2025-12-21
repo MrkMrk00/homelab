@@ -21,12 +21,18 @@
     proto: "{{ item.proto | default(omit) }}"
     from_ip: "{{ item.from_ip | default(omit) }}"
   loop:
-    - { rule: allow, from_ip: 10.0.0.0/24, port: 22, proto: tcp } # SSH from local network
-    - { rule: allow, port: 6443, proto: tcp } # Kubernetes API server
-    - { rule: allow, port: 10250, proto: tcp } # kubelet
-    - { rule: allow, port: 30000:32767, proto: tcp } # NodePort range
-    - { rule: allow, port: 2379:2380, proto: tcp } # etcd (control-plane only)
-    - { rule: allow, port: 10251:10259, proto: tcp } # Control-plane components
-    - { rule: allow, port: 8472, proto: udp } # Flannel VXLAN
-    - { rule: allow, from_ip: 10.42.0.0/16 } # Pod network (adjust subnet if needed)
-    - { rule: allow, from_ip: 10.0.0.0/24 } # Node subnet
+    - { rule: allow, from_ip: 10.0.0.0/24, port: 22, proto: tcp }
+    - { rule: allow, port: 6443, proto: tcp }
+    - { rule: allow, port: 10250, proto: tcp }
+    - { rule: allow, port: '2379:2381', proto: tcp }
+    - { rule: allow, port: '10251:10259', proto: tcp }
+    - { rule: allow, port: 8472, proto: udp }
+    - { rule: allow, port: 5001, proto: tcp }
+    - { rule: allow, port: 51820, proto: udp }
+    - { rule: allow, port: 51821, proto: udp }
+    - { rule: allow, port: '30000:32767', proto: tcp }
+    - { rule: allow, from_ip: 10.42.0.0/16 }
+    - { rule: allow, from_ip: 10.43.0.0/16 }
+    - { rule: allow, from_ip: 10.0.0.0/24 }
+    - { rule: allow, port: 53, proto: udp }
+    - { rule: allow, port: 53, proto: tcp }

@@ -1,24 +1,9 @@
 repositories:
-  - name: metallb
-    url: https://metallb.github.io/metallb
-
   - name: traefik
     url: https://traefik.github.io/charts
 
   - name: mojo2600
     url: https://mojo2600.github.io/pihole-kubernetes/
-
-  - name: longhorn
-    url: https://charts.longhorn.io
-
-  - name: prometheus-community
-    url: https://prometheus-community.github.io/helm-charts
-
-  - name: grafana
-    url: https://grafana.github.io/helm-charts
-
-  - name: mariadb-operator
-    url: https://helm.mariadb.com/mariadb-operator
 
   - name: argo
     url: https://argoproj.github.io/argo-helm
@@ -27,24 +12,12 @@ repositories:
     url: https://community-charts.github.io/helm-charts
 ---
 releases:
-  - name: metallb
-    namespace: metallb-system
-    version: ~0.15.2
-    chart: metallb/metallb
-
   - name: traefik
     namespace: traefik-system
     chart: traefik/traefik
-    version: ~35.4.0
+    version: ~38.0.0
     values:
       - values/traefik.yaml
-
-  - name: traefik
-    namespace: traefik-prod-system
-    chart: traefik/traefik
-    version: ~35.4.0
-    values:
-      - values/traefik-prod.yaml
 
   - name: pihole
     namespace: pihole-system
@@ -53,44 +26,10 @@ releases:
     values:
       - values/pihole.yaml
 
-  - name: longhorn
-    namespace: longhorn-system
-    chart: longhorn/longhorn
-    version: ~1.9.0
-    values:
-      - values/longhorn.yaml
-
-  - name: kube-prometheus-stack
-    namespace: prometheus-system
-    chart: prometheus-community/kube-prometheus-stack
-    version: ^78.0.0
-    values:
-      - values/kube-prometheus-stack.yaml
-
-  - name: grafana-loki
-    namespace: prometheus-system
-    chart: grafana/loki
-    version: ^6.0.0
-    values:
-      - values/grafana-loki.yaml
-
-  - name: grafana-alloy
-    namespace: prometheus-system
-    chart: grafana/alloy
-    version: ^1.0.0
-    values:
-      - values/grafana-alloy.yaml
-
-  - name: mariadb-operator
-    namespace: mariadb-system
-    chart: mariadb-operator/mariadb-operator
-    values:
-      - values/mariadb-operator.yaml
-
   - name: argocd
     namespace: argocd
     chart: argo/argo-cd
-    version: ~8.0.0
+    version: ~9.1.0
     values:
       - values/argocd.yaml
 
