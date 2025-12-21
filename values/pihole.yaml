@@ -5,7 +5,11 @@ DNS2:
 
 dnsmasq:
   customDnsEntries:
-    - "address=/cluster.local/10.0.0.140"
+    - "address=/cluster.local/10.0.0.230"
+  
+  # Allow traffic from any network interface
+  customSettings:
+    - "except-interface=nonexisting"
 
 persistentVolumeClaim:
   enabled: false
@@ -14,21 +18,17 @@ virtualHost: "pihole.cluster.local"
 
 ingress:
   enabled: true
-  ingressClassName: traefik-internal
+  ingressClassName: traefik
   hosts:
     - "pihole.cluster.local"
 
 serviceDns:
-  loadBalancerIP: 10.0.0.189
-  annotations:
-    metallb.universe.tf/allow-shared-ip: pihole-svc
   type: LoadBalancer
 
 replicaCount: 1
 
-persistentVolumeClaim:
-  enabled: true
-  accessModes:
-    - ReadWriteOnce
-  storageClass: longhorn
+nodeSelector:
+  kubernetes.io/hostname: "kube-trixie-0"
 
+persistentVolumeClaim:
+  enabled: false

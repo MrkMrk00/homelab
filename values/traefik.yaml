@@ -1,7 +1,7 @@
 ingressClass:
   enabled: true
   isDefaultClass: true
-  name: traefik-internal
+  name: traefik
 
 ports:
   web:
@@ -13,6 +13,9 @@ ports:
       trustedIPs:
         - "10.42.0.0/16"
 
+deployment:
+  kind: DaemonSet
+
 logs:
   access:
     enabled: true
@@ -21,21 +24,17 @@ logs:
 
 providers:
   kubernetesCRD:
-    ingressClass: traefik-internal
+    ingressClass: traefik
 
   kubernetesIngress:
-    ingressClass: traefik-internal
-
-service:
-  annotations:
-    metallb.universe.tf/loadBalancerIPs: 10.0.0.140
+    ingressClass: traefik
 
 ingressRoute:
   dashboard:
     enabled: true
     annotations:
-      kubernetes.io/ingress.class: traefik-internal
-    matchRule: Host(`traefik.cluster.local`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
+      kubernetes.io/ingress.class: traefik
+    matchRule: Host(`traefik.cluster.local`)
     services:
       - name: api@internal
         kind: TraefikService
