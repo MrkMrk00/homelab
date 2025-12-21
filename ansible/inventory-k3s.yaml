@@ -9,9 +9,3 @@ k3s_cluster:
     k3s_version: v1.34.2+k3s1
     extra_server_args: "--disable=traefik"
     api_endpoint: "10.0.0.230"
-
-    server_config_yaml: |
-      kubelet-arg: "resolv-conf=/run/systemd/resolve/resolv.conf"
-
-    agent_config_yaml: |
-      kubelet-arg: "resolv-conf=/run/systemd/resolve/resolv.conf"
