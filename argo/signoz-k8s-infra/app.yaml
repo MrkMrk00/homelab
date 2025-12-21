@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: signoz-k8s-infra
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  source:
+    repoURL: https://charts.signoz.io
+    targetRevision: 0.15.0
+    chart: k8s-infra
+    helm:
+      valuesObject:
+        global:
+          cloud: others
+          clusterName: default
+          deploymentEnvironment: production
+        otelCollectorEndpoint: signoz-otel-collector.monitoring-system.svc.cluster.local:4317
+        otelInsecure: true
+        presets:
+          otlpExporter:
+            enabled: true
+          hostMetrics:
+            enabled: true
+            collectionInterval: 60s
+          logsCollection:
+            enabled: true
+          kubeletMetrics:
+            enabled: true
+            collectionInterval: 60s
+          kubernetesAttributes:
+            enabled: true
+            passthrough: true
+          clusterMetrics:
+            enabled: true
+          k8sEvents:
+            enabled: true
