@@ -1,0 +1,9 @@
+apiVersion: v2
+name: longhorn-deployment
+type: application
+version: 1.0.0
+
+dependencies:
+  - name: longhorn
+    version: 1.11.1
+    repository: https://charts.longhorn.io

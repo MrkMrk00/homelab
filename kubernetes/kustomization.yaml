@@ -2,3 +2,4 @@ resources:
 - app.yaml
 - traefik/app.yaml
 - metallb/app.yaml
+- longhorn/app.yaml

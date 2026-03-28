@@ -1,0 +1,8 @@
+longhorn:
+  defaultSettings:
+    defaultDataLocality: best-effort
+  persistence:
+    defaultClass: true
+    defaultClassReplicaCount: 3
+  ingress:
+    enabled: true
