@@ -1,0 +1,10 @@
+apiVersion: v2
+name: traefik-deployment
+description: Wrapper chart for Cluster Ingress (Traefik)
+type: application
+version: 1.0.0
+
+dependencies:
+  - name: traefik
+    version: 39.0.6
+    repository: oci://ghcr.io/traefik/helm/traefik

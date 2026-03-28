@@ -1,0 +1,13 @@
+traefik:
+  deployment:
+    kind: DaemonSet
+  podDisruptionBudget:
+    enabled: true
+    maxUnavailable: 1
+  ingressClass:
+    name: traefik
+  # Disable default Gateway creation
+  gateway:
+    enabled: false
+  ingressRoute:
+    enabled: true

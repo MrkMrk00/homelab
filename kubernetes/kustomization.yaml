@@ -1,2 +1,3 @@
 resources:
 - app.yaml
+- traefik/app.yaml
