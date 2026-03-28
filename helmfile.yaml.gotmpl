@@ -1,43 +1,11 @@
 repositories:
-  - name: traefik
-    url: https://traefik.github.io/charts
-
-  - name: mojo2600
-    url: https://mojo2600.github.io/pihole-kubernetes/
-
   - name: argo
     url: https://argoproj.github.io/argo-helm
-
-  - name: community-charts
-    url: https://community-charts.github.io/helm-charts
 ---
 releases:
-  - name: traefik
-    namespace: traefik-system
-    chart: traefik/traefik
-    version: ~38.0.0
-    values:
-      - values/traefik.yaml
-
-  - name: pihole
-    namespace: pihole-system
-    chart: mojo2600/pihole
-    version: ~2.31.0
-    values:
-      - values/pihole.yaml
-
   - name: argocd
     namespace: argocd
+    createNamespace: true
     chart: argo/argo-cd
-    version: ~9.1.0
-    values:
-      - values/argocd.yaml
+    version: 9.4.17
 
-{{- if ne (env "CF_TUNNEL_CONFIG" | default "") "" -}}
-  - name: cloudflared
-    namespace: cloudflared-system
-    chart: community-charts/cloudflared
-    version: ~2.0.0
-    values:
-      - values/cloudflared.yaml.gotmpl
-{{- end -}}
