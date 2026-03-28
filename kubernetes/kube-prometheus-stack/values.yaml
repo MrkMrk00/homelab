@@ -3,6 +3,8 @@ kube-prometheus-stack:
     ingress:
       enabled: true
       ingressClassName: traefik
+      hosts:
+        - grafana.cluster.local
   prometheus:
     storageSpec:
       volumeClaimTemplate:
