@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/config-map.yaml") . | sha256sum }}
+    spec:
+      containers:
+      - name: cloudflared
+        image: "docker.io/cloudflare/cloudflared:{{ .Values.cloudflaredVersion }}"
+        args:
+          - "tunnel"
+          - "--config"
+          - "/etc/cloudflared/config/config.yaml"
+          - "run"
+        volumeMounts:
+          - name: config
+            mountPath: /etc/cloudflared/config
+            readOnly: true
+          - name: creds
+            mountPath: /etc/cloudflared/creds
+            readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: cloudflared-config
+        - name: creds
+          secret:
+            secretName: cloudflare-tunnel-credentials

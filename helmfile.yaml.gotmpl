@@ -8,4 +8,12 @@ releases:
     createNamespace: true
     chart: argo/argo-cd
     version: 9.4.17
+    values:
+      - global:
+          domain: argocd.cluster.local
+        server:
+          ingress:
+            enabled: true
+            ingressClassName: traefik
+            hostname: argocd.cluster.local
 
