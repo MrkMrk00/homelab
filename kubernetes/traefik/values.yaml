@@ -10,4 +10,5 @@ traefik:
   gateway:
     enabled: false
   ingressRoute:
-    enabled: true
+    dashboard:
+      enabled: true
