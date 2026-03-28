@@ -6,3 +6,4 @@ longhorn:
     defaultClassReplicaCount: 3
   ingress:
     enabled: true
+    host: longhorn.cluster.local
