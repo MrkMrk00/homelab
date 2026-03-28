@@ -4,3 +4,4 @@ resources:
 - metallb/app.yaml
 - longhorn/app.yaml
 - dnsmasq/app.yaml
+- kube-prometheus-stack/app.yaml

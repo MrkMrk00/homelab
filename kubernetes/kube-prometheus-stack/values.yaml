@@ -1,0 +1,13 @@
+kube-prometheus-stack:
+  grafana:
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+  prometheus:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: longhorn
+          resources:
+            requests:
+              storage: 5Gi

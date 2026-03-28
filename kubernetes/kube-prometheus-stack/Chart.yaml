@@ -1,0 +1,9 @@
+apiVersion: v2
+name: monitoring-stack
+type: application
+version: 1.0.0
+
+dependencies:
+  - name: kube-prometheus-stack
+    version: 82.15.1
+    repository: oci://ghcr.io/prometheus-community/charts
