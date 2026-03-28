@@ -1,35 +1,35 @@
-- name: Upgrade all packages
-  ansible.builtin.apt:
-    update_cache: true
-    cache_valid_time: 3600
-    upgrade: dist
-    autoremove: true
-    install_recommends: false
-
-- name: Install basic packages
-  ansible.builtin.apt:
-    name:
-      - vim
-      - python3
-      - python3-pip
-      - ca-certificates
-      - curl
-      - open-iscsi
-      - nfs-common
-    state: present
-
-- name: "Resolved"
-  ansible.builtin.include_tasks:
-    file: resolved.yaml
-
-- name: "SSH"
-  ansible.builtin.include_tasks:
-    file: ssh.yaml
+# - name: Upgrade all packages
+#   ansible.builtin.apt:
+#     update_cache: true
+#     cache_valid_time: 3600
+#     upgrade: dist
+#     autoremove: true
+#     install_recommends: false
+#
+# - name: Install basic packages
+#   ansible.builtin.apt:
+#     name:
+#       - vim
+#       - python3
+#       - python3-pip
+#       - ca-certificates
+#       - curl
+#       - open-iscsi
+#       - nfs-common
+#     state: present
+#
+# - name: "Resolved"
+#   ansible.builtin.include_tasks:
+#     file: resolved.yaml
+#
+# - name: "SSH"
+#   ansible.builtin.include_tasks:
+#     file: ssh.yaml
+#
+# - name: "Kernel"
+#   ansible.builtin.include_tasks:
+#     file: kernel.yaml
 
 - name: "Firewall"
   ansible.builtin.include_tasks:
     file: firewall.yaml
-
-- name: "Kernel"
-  ansible.builtin.include_tasks:
-    file: kernel.yaml

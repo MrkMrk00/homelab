@@ -1,0 +1,41 @@
+#!/usr/sbin/nft -f
+
+flush ruleset
+
+table inet filter {
+    set k3s_nodes {
+        type ipv4_addr
+        elements = {
+            {% for ip in groups['kube_vms'] %}
+            {{ ip }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        }
+    }
+
+    chain input {
+        type filter hook input priority 0; policy drop;
+
+        ct state established,related accept
+        iifname "lo" accept
+        ip protocol icmp accept
+
+        # Allow everything from the local subnet (includes Wireguard)
+        ip saddr 10.0.0.0/24 accept
+
+        # K3s HA Etcd: Node-to-Node only (Extra layer of safety)
+        ip saddr @k3s_nodes tcp dport { 2379, 2380 } accept
+
+        # K3s Networking (VXLAN & Kubelet)
+        udp dport 8472 accept
+        tcp dport 10250 accept
+        iifname "flannel*" accept
+        iifname "cni*" accept
+
+        # Logging
+        log prefix "NFT_DROP: " limit rate 3/minute
+    }
+
+    chain forward {
+        type filter hook forward priority 0; policy accept;
+    }
+}

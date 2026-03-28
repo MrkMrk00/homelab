@@ -1,0 +1,7 @@
+- name: Provision K3s cluster
+  ansible.builtin.import_playbook: k3s.orchestration.site
+  tags: ['provision']
+
+# - name: Upgrade K3s cluster
+#   ansible.builtin.import_playbook: k3s.orchestration.upgrade
+#   tags: ['upgrade']

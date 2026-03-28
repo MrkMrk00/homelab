@@ -1,38 +1,16 @@
-- name: Ensure ufw is installed
+- name: Ensure security packages are installed
   ansible.builtin.apt:
-    name: ufw
+    name: nftables
     state: present
-    update_cache: yes
 
-- name: Reset UFW to defaults
-  ansible.builtin.command: ufw --force reset
+- name: Apply nftables config
+  template:
+    src: ../templates/nftables.conf.j2
+    dest: /etc/nftables.conf
+  register: nft_config
 
-- name: Set default UFW policies
-  ansible.builtin.ufw:
-    state: enabled
-    default: deny
-    direction: incoming
-    logging: on
-
-- name: Allow required ports and networks for k3s
-  ansible.builtin.ufw:
-    rule: "{{ item.rule }}"
-    port: "{{ item.port | default(omit) }}"
-    proto: "{{ item.proto | default(omit) }}"
-    from_ip: "{{ item.from_ip | default(omit) }}"
-  loop:
-    - { rule: allow, from_ip: 10.0.0.0/24, port: 22, proto: tcp }
-    - { rule: allow, port: 6443, proto: tcp }
-    - { rule: allow, port: 10250, proto: tcp }
-    - { rule: allow, port: '2379:2381', proto: tcp }
-    - { rule: allow, port: '10251:10259', proto: tcp }
-    - { rule: allow, port: 8472, proto: udp }
-    - { rule: allow, port: 5001, proto: tcp }
-    - { rule: allow, port: 51820, proto: udp }
-    - { rule: allow, port: 51821, proto: udp }
-    - { rule: allow, port: '30000:32767', proto: tcp }
-    - { rule: allow, from_ip: 10.42.0.0/16 }
-    - { rule: allow, from_ip: 10.43.0.0/16 }
-    - { rule: allow, from_ip: 10.0.0.0/24 }
-    - { rule: allow, port: 53, proto: udp }
-    - { rule: allow, port: 53, proto: tcp }
+- name: Reload nftables if config changed
+  ansible.builtin.systemd:
+    name: nftables
+    state: reloaded
+  when: nft_config.changed

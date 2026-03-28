@@ -2,10 +2,11 @@ k3s_cluster:
   children:
     server:
       hosts:
-        10.0.0.230:
-        10.0.0.231:
-        10.0.0.232:
+        10.0.0.220:
+        10.0.0.221:
+        10.0.0.222:
   vars:
-    k3s_version: v1.34.2+k3s1
-    extra_server_args: "--disable=traefik"
-    api_endpoint: "10.0.0.230"
+    k3s_version: v1.35.2+k3s1
+    extra_server_args: "--disable=traefik --disable=servicelb"
+    api_endpoint: "10.0.0.220"
+    token: "{{ k3s_token }}"
