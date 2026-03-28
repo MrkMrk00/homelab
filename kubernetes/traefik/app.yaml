@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/MrkMrk00/homelab.git
-    targetRevision: HEAD
+    targetRevision: master
     path: kubernetes/traefik
     helm:
       valueFiles:
