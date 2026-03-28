@@ -1,0 +1,9 @@
+victoria-metrics-k8s-stack:
+  grafana:
+    plugins:
+      - victoriametrics-metrics-datasource
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      hosts:
+        - grafana.cluster.local
