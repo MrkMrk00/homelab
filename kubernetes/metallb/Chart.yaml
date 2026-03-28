@@ -1,0 +1,10 @@
+apiVersion: v2
+name: metallb-deployment
+description: Wrapper chart for MetalLB and L2 resources
+type: application
+version: 1.0.0
+
+dependencies:
+- name: metallb
+  version: 0.15.3
+  repository: https://metallb.github.io/metallb
