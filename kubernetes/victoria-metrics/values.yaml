@@ -1,4 +1,5 @@
 victoria-metrics-k8s-stack:
+  fullnameOverride: "vm"
   grafana:
     plugins:
       - victoriametrics-metrics-datasource
