@@ -1,9 +1,0 @@
-apiVersion: v2
-name: victoria-metrics-deployment
-type: application
-version: 1.0.0
-
-dependencies:
-  - name: victoria-metrics-k8s-stack
-    repository: https://victoriametrics.github.io/helm-charts/
-    version: 0.72.5
