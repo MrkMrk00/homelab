@@ -4,3 +4,4 @@ resources:
 - metallb/app.yaml
 - longhorn/app.yaml
 - victoria-metrics/app.yaml
+- dnsmasq/app.yaml

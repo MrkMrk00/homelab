@@ -1,4 +1,7 @@
 traefik:
+  service:
+    spec:
+      loadBalancerIP: 10.0.0.140
   deployment:
     kind: DaemonSet
   ingressClass:
