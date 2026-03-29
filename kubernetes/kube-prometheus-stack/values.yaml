@@ -5,6 +5,7 @@ kube-prometheus-stack:
       ingressClassName: traefik
       hosts:
         - grafana.cluster.local
+        - grafana.hauschwitz.cz
   prometheus:
     storageSpec:
       volumeClaimTemplate:
